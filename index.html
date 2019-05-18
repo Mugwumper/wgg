@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors Part 1</title>
+</head>
+
+<body>
+
+  <div id="game">
+        <h2>PC score: <span id="scorePC"><strong>0</strong></span></h2>
+        <h2>Your score: <span id="scoreUser"><strong>0</strong></span></h2>
+        <h2>Ties score: <span id="scoreTie"><strong>0</strong></span></h2>
+  </div>
+
+  <script type="text/javascript">
+
+    var scorePC = 0;
+    var scoreUser = 0;
+    var scoreTie = 0;
+    var elementPC = document.getElementById("scorePC");
+    var elementUser = document.getElementById("scoreUser");
+    var elementTie = document.getElementById("scoreTie");
+
+    // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
+    var computerChoices = ["r", "p", "s"];
+    // Whenever a key is pressed, alert "pressed a button".
+    document.onkeyup = function(event) {
+      // Deteremine what key is pressed
+      var userKey = event.key;  
+      userKey = userKey.toLowerCase();
+      // is the key valid?  
+      if (computerChoices.indexOf(userKey) > -1)  {
+          console.log('user entry ('+userKey+') is valid.');
+        // Randomly choose a computer answer (R,P, or S)
+        pcKey = computerChoices[Math.floor(Math.random() * computerChoices.length)];    
+        // Report!
+        if (pcKey === userKey) {
+            console.log('user entry ('+userKey+') is equal to pc choice ('+pcKey+'). This is a TIE');
+            scoreTie++;
+        } else {
+            console.log('user entry ('+userKey+') is NOT equal to pc choice ('+pcKey+').');
+            if (userKey === 'r') {
+                if (pcKey === 'p') { 
+                    console.log('pc win');
+                    scorePC++;
+                } else {
+                    console.log('you win');
+                    scoreUser++;
+                }
+            }
+
+            if (userKey === 'p') {
+                if (pcKey === 's') { 
+                    console.log('pc win');
+                    scorePC++;
+                } else {
+                    console.log('you win');
+                    scoreUser++;
+                }
+            }
+
+            if (userKey === 's') {
+                if (pcKey === 'r') { 
+                    console.log('pc win');
+                    scorePC++;
+                } else {
+                    scoreUser++;
+                    console.log('you win');
+                }
+            }
+        }    
+        // update report
+        elementPC.textContent = scorePC;
+        elementUser.textContent = scoreUser;
+        elementTie.textContent = scoreTie;
+
+    } else {
+         console.log('user entry ('+userKey+') is NOT valid.');
+      }
+    };
+  </script>
+
+</body>
+
+</html>
