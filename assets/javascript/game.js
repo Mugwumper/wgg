@@ -1,25 +1,24 @@
 
-
 var scoreUser = 0;
 const MAX_ATTEMPTS = 10;
 var attemptsRemaining = MAX_ATTEMPTS;
 var elementWordPanel = document.getElementById("wordPanel");
 var elementUsedLetterPanel = document.getElementById("usedLetterPanel");
 var elementStatus = document.getElementById("status");
+var elementAttempsRemaining = document.getElementById("attemptsRemaining");
 var elementSBMPanel = document.getElementById("sbmPanel");
-let theWord = 'dog';
-let usedChars = 'd';
+let theWord = 'hammer';
+let usedChars = '';
 let solved = false;
 var gTimeoutVar;
 
 console.log("script started");
+updateWordPanel();
 
 function updateWordPanel() {
-    let wordString = theWord;
-    let displayStr = "";
-    
-    for (var x = 0; x < wordString.length; x++) {
-        var c = wordString.charAt(x);
+    let displayStr = "";    
+    for (var x = 0; x < theWord.length; x++) {
+        var c = theWord.charAt(x);
         if (usedChars.includes(c)) {
             displayStr = displayStr + c + " ";
         } else {
@@ -31,23 +30,21 @@ function updateWordPanel() {
     updateStatus();
 }
 
-updateWordPanel();
-
-function updateUsedLetterPanel(usedChars) {
+function updateUsedLetterPanel(Chars) {
     var displayStr = '';
-    for (var x = 0; x < usedChars.length; x++) {
-        var c = usedChars.charAt(x);
-            displayStr = displayStr + c + ", ";
+    for (var x = 0; x < Chars.length; x++) {
+        var c = Chars.charAt(x);
+        displayStr = displayStr + c + ", ";
     }
     elementUsedLetterPanel.textContent = displayStr;
 }
 
-document.onkeyup = function(event) {
-    var userKey = event.key;  
-    userKey = userKey.toLowerCase();
-    usedChars = usedChars + userKey;
-    updateWordPanel();    
-}
+// document.onkeyup = function(event) {
+//     var userKey = event.key;  
+//     userKey = userKey.toLowerCase();
+//     usedChars = usedChars + userKey;
+//     updateWordPanel();    
+// }
 
 function mainFunction() {
     var x = document.getElementById("input");
@@ -59,16 +56,39 @@ function mainFunction() {
 }
 
 function applyChar(char) {
-    var userKey = char;  
-    userKey = userKey.toLowerCase();
-    usedChars = usedChars + userKey;
+    char = char.toLowerCase();
+    console.log("User entered: '"+char+"'");
+    // check if the character has been used already.
+    if (isCharInWord(char, usedChars)) {
+        sbm("You already used '"+char+"'");
+    } else {
+        // check if the character is in the word.
+        if (isCharInWord(char, theWord)) {
+            // TODO: Update some kinda - good for you, that character is in the word!
+        } else {
+            attemptsRemaining--;  
+        }
+        updateAttemptsRemaining(attemptsRemaining);
+        usedChars = usedChars + char;
+    }
     updateWordPanel();
     updateUsedLetterPanel(usedChars);
-    sbm("User entered a "+userKey+" ", 100);
+}
+
+function isCharInWord(char, Word) {
+    isFound = false;
+    for (var x = 0; x < Word.length; x++) {
+        var c = Word.charAt(x);
+        if (char === c) {
+            /// this char is a hit!
+            isFound = true;    
+        }
+    }
+    return isFound;
 }
 
 function isSolved(displayStr) {
-    return !(displayStr.includes('_'));
+    return (!(displayStr.includes('_')));
 }
     
 function updateStatus() {
@@ -79,11 +99,20 @@ function updateStatus() {
     }
 } 
 
+function updateAttemptsRemaining(attemptsRemaining) {
+    if (attemptsRemaining > 0) { 
+        elementAttempsRemaining.textContent = "Attempts Remaining: " + attemptsRemaining;
+    } else {
+        elementAttempsRemaining.textContent = "Attempts Remaining: 0 (you lose)";
+    }
+}
+
 function doReset() {
     theWord = 'cat';
     scoreUser = 0;
-    attemptsRemaining = MAX_ATTEMPTS;   
-    usedChars = '';
+    attemptsRemaining = MAX_ATTEMPTS;  
+    updateAttemptsRemaining(attemptsRemaining);
+     usedChars = '';
     solved = false;
     updateWordPanel();
     updateStatus();
@@ -94,11 +123,10 @@ function doReset() {
     sbm("game reset");
 }    
     
-function sbm(msg,  holdtime) {
+function sbm(msg) {
     clearTimeout(gTimeoutVar);
     gTimeoutVar= elementSBMPanel.textContent = msg;
-    sleep(holdtime);
-    setTimeout(clearSBM, 3000);
+    setTimeout(clearSBM, 1000);
 }    
 
 function clearSBM() {
@@ -107,7 +135,7 @@ function clearSBM() {
 
 function doTest() {
     applyChar('o');
-    sleep(500);
+    //sleep(500);
     applyChar('g');
 }
 
@@ -118,6 +146,6 @@ function sleep(milliseconds) {
         break;
       }
     }
-  }
+}
     
     
