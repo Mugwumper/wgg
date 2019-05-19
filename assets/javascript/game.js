@@ -1,12 +1,16 @@
 
-var scorePC = 0;
+
 var scoreUser = 0;
-var scoreTie = 0;
+const MAX_ATTEMPTS = 10;
+var attemptsRemaining = MAX_ATTEMPTS;
 var elementWordPanel = document.getElementById("wordPanel");
+var elementUsedLetterPanel = document.getElementById("usedLetterPanel");
 var elementStatus = document.getElementById("status");
+var elementSBMPanel = document.getElementById("sbmPanel");
 let theWord = 'dog';
 let usedChars = 'd';
 let solved = false;
+var gTimeoutVar;
 
 console.log("script started");
 
@@ -29,6 +33,15 @@ function updateWordPanel() {
 
 updateWordPanel();
 
+function updateUsedLetterPanel(usedChars) {
+    var displayStr = '';
+    for (var x = 0; x < usedChars.length; x++) {
+        var c = usedChars.charAt(x);
+            displayStr = displayStr + c + ", ";
+    }
+    elementUsedLetterPanel.textContent = displayStr;
+}
+
 document.onkeyup = function(event) {
     var userKey = event.key;  
     userKey = userKey.toLowerCase();
@@ -36,14 +49,22 @@ document.onkeyup = function(event) {
     updateWordPanel();    
 }
 
-
 function mainFunction() {
-    var x = document.getElementById("fname");
-    x.value = x.value.toLowerCase();
-    var userKey = x.value;  
+    var x = document.getElementById("input");
+    var c =  x.value.charAt(x.value.length-1);
+    // x.value = x.value.toLowerCase();
+    // applyChar(x.value);
+    c = c.toLowerCase();
+    applyChar(c);
+}
+
+function applyChar(char) {
+    var userKey = char;  
     userKey = userKey.toLowerCase();
     usedChars = usedChars + userKey;
     updateWordPanel();
+    updateUsedLetterPanel(usedChars);
+    sbm("User entered a "+userKey+" ", 100);
 }
 
 function isSolved(displayStr) {
@@ -58,72 +79,45 @@ function updateStatus() {
     }
 } 
 
+function doReset() {
+    theWord = 'cat';
+    scoreUser = 0;
+    attemptsRemaining = MAX_ATTEMPTS;   
+    usedChars = '';
+    solved = false;
+    updateWordPanel();
+    updateStatus();
+    updateUsedLetterPanel(usedChars);
+    updateUsedLetterPanel
+    elementStatus.textContent = "Puzzle Unsolved";
+    document.getElementById("input").value = '';
+    sbm("game reset");
+}    
     
-    
-    
-    
-    
-    // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
-    var computerChoices = ["r", "p", "s"];
-    // Whenever a key is pressed, alert "pressed a button".
-    document.onkeyup = function(event) {
-    
-     // firstprompt.textContent = "";
-    
-      // Deteremine what key is pressed
-      var userKey = event.key;  
-      userKey = userKey.toLowerCase();
-      // is the key valid?  
-      if (computerChoices.indexOf(userKey) > -1)  {
-          console.log('user entry ('+userKey+') is valid.');
-    
-    
-    
-        // Randomly choose a computer answer (R,P, or S)
-        pcKey = computerChoices[Math.floor(Math.random() * computerChoices.length)];    
-        // Report!
-        if (pcKey === userKey) {
-            console.log('user entry ('+userKey+') is equal to pc choice ('+pcKey+'). This is a TIE');
-            scoreTie++;
-        } else {
-            console.log('user entry ('+userKey+') is NOT equal to pc choice ('+pcKey+').');
-            if (userKey === 'r') {
-                if (pcKey === 'p') { 
-                    console.log('pc win');
-                    scorePC++;
-                } else {
-                    console.log('you win');
-                    scoreUser++;
-                }
-            }
-    
-            if (userKey === 'p') {
-                if (pcKey === 's') { 
-                    console.log('pc win');
-                    scorePC++;
-                } else {
-                    console.log('you win');
-                    scoreUser++;
-                }
-            }
-    
-            if (userKey === 's') {
-                if (pcKey === 'r') { 
-                    console.log('pc win');
-                    scorePC++;
-                } else {
-                    scoreUser++;
-                    console.log('you win');
-                }
-            }
-        }    
-        // update report
-        elementPC.textContent = scorePC;
-        elementUser.textContent = scoreUser;
-        elementTie.textContent = scoreTie;
-    
-    } else {
-         console.log('user entry ('+userKey+') is NOT valid.');
+function sbm(msg,  holdtime) {
+    clearTimeout(gTimeoutVar);
+    gTimeoutVar= elementSBMPanel.textContent = msg;
+    sleep(holdtime);
+    setTimeout(clearSBM, 3000);
+}    
+
+function clearSBM() {
+    elementSBMPanel.textContent = '.';
+}
+
+function doTest() {
+    applyChar('o');
+    sleep(500);
+    applyChar('g');
+}
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
       }
-    };
+    }
+  }
+    
     

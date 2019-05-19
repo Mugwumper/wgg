@@ -11,13 +11,17 @@
 <body>
     <h1>Word Guess Game</h1>
     <div id="game">
-            <h3 id="wordPanel">(gets replaced with underscores)</h3>
+        <h2 id="wordPanel">(gets replaced with underscores)</h2>
 
-            Enter your name: <input type="text" id="fname" onkeyup="mainFunction()">
-            <h4 id="status">(gets replaced with underscores)</h4>
+        type letters here to guess the word: <input type="text" id="input" onkeyup="mainFunction()">
 
+        <h4 id="status">(gets replaced with underscores)</h4>
+        <h4 id="usedLetterPanel">(gets replaced by used letters)</h4>
+        <h4 id="sbmPanel">(gets replaced by status messages)</h4>
 
-            
+        <button onclick="doReset()">Reset</button>
+        <hr>
+        <button onclick="doTest()">Test</button>
 
     </div>
 </body>
