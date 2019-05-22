@@ -1,4 +1,198 @@
-body {
-    background-color: rgba(241, 233, 220, 0.603);
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --orange: #FF9C00;
+    --lilac: #9C9CFF;
+    --salmon: #D06468;
+    --cream: #FFCC99;
+    --text: 'Saira Extra Condensed', sans-serif; 
+ }
+html {
+    height: 100%;
+}
 
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background: black;
+    color: orange;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-weight: 600;
+    display: flex;
+    flex-flow: column;
+}
+
+h1 {
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 7em;
+    margin: 0;
+    padding: 0;
+}
+
+
+h2 {
+    text-transform: uppercase;
+    text-align: left;
+    font-size: 9em;
+    margin-top: 52px;
+    padding: 0;
+}
+
+table td {
+    padding: .2em .5em;
+    line-height: 1;
+    text-align: right;
+}
+
+button {
+    outline: none;
+    border: none;
+    border-radius: 1em; 
+    font-size: 1em;
+    line-height: 1;
+    padding: .5em 3em .5em 1em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    position: relative;
+    color: black;
+    background: orange;
+    cursor: pointer;
+    /* &:after {
+        display: block;
+        position: absolute;
+        content: attr(data-button-number);
+        top: 0;
+        font-size: 1.5em;
+        right: .6em;
+        background: black;
+        color: white;
+        width: 1em;
+        text-align: center;
+        line-height: 1;
+        padding-top: .15em;
+        height: 1.5em;
+    } */
+}
+
+.buttons {
+    padding: 1em 0;
+    /* button {
+        margin: 0 .5em .5em 0;
+        animation: button-pulse linear infinite 4s;
+        &:nth-of-type(2){
+            animation-duration: 7s;
+            animation-delay: 3s;
+        }
+        &:nth-of-type(3){ animation-duration: 2.3s;}
+        &:nth-of-type(4){ animation-duration: 5s;}
+    } */
+}
+
+@keyframes button-pulse {
+    0%{ background: orange; }
+    25%{ background: orange; }
+    25.1%{ background: var(--lilac)}; 
+    50%{ background: var(--lilac) }
+    50.1%{ background: salmon; }
+    75%{ background: salmon; }
+    75.1%{ background: var(--cream) }
+    100%{ background: var(--cream) }
+}
+
+.down-wrapper {
+    background: orange;
+    background-image: linear-gradient(
+        orange 0%,
+        orange 40%,
+        black 40%,
+        black 42%,
+        var(--lilac) 42%,
+        var(--lilac) 100%
+    );
+    box-shadow:
+        inset orange -10em 0em 0 0, 
+        inset black -10.3em 0em 0 0,
+        inset salmon -20em 0em 0 0,
+        inset black -20.3em 0em 0 0;
+    padding-left: 10rem;
+    padding-bottom: 1em;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    border-bottom-left-radius: 5em; 
+    position: relative;
+    /* &:before {
+        content: attr(data-wrapper-1);
+        position: absolute;
+        color: black;
+        text-transform: uppercase;
+        bottom: 60%;
+        right: calc(100% - 9.8rem);
+        font-size: 1.5em;
+    }
+    &:after {
+        content: attr(data-wrapper-2);
+        position: absolute;
+        color: black;
+        text-transform: uppercase;
+        top: 43%;
+        right: calc(100% - 9.8rem);
+        font-size: 1.5em;
+    } */
+}
+.down-wrapper-inner {
+    background: black;
+    padding-left: 2em;
+    border-bottom-left-radius: 2em;
+}
+
+.up-wrapper {
+    display: flex;
+    flex-flow: column;
+    background: orange;
+    height: 100%;
+    box-shadow:
+        inset orange -5em 6em 0 0,
+        inset black -5em 6.3em 0 0,
+        inset salmon -5em 13em 0 0,
+        inset black -5em 13.3em 0 0;
+    padding-left: 10rem;
+    padding-top: 1em;
+    margin-left: 2em;
+    border-top-left-radius: 5em;
+    position: relative;
+    /* &:before {
+        content: attr(data-wrapper-1);
+        position: absolute;
+        color: black;
+        text-transform: uppercase;
+        top: 5.5em;
+        right: calc(100% - 9.8rem);
+        font-size: 1.5em;
+    }
+    &:after {
+        content: attr(data-wrapper-2);
+        position: absolute;
+        color: black;
+        text-transform: uppercase;
+        top: 14em;
+        right: calc(100% - 9.8rem);
+        font-size: 1.5em;
+    } */
+}
+.up-wrapper-inner {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    background: black;
+    padding-left: 2em;
+    border-top-left-radius: 2em;
+}
+
+/**/
+
+#input {
+    color: orange;
+    background-color: black;
+    max-width: 100px;
 }
