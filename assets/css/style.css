@@ -21,6 +21,7 @@ body {
     font-weight: 600;
     display: flex;
     flex-flow: column;
+    min-width: 700px;
 }
 
 h1 {
@@ -195,4 +196,16 @@ button {
     color: orange;
     background-color: black;
     max-width: 100px;
+}
+
+#spacer {
+    margin:500px;
+    border-color:#ffcb2f; 
+}
+
+@media screen and (max-width: 1125px) {
+    h1 {
+        display: none;
+    }
+
 }

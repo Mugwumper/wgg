@@ -1,5 +1,5 @@
 var WINS = 0;
-var LOSES = 0;
+var LOSSES = 0;
 const MAX_ATTEMPTS = 10;
 var attemptsRemaining = MAX_ATTEMPTS;
 var elementWordPanel = document.getElementById("wordPanel");
@@ -9,19 +9,24 @@ var elementAttempsRemaining = document.getElementById("attemptsRemaining");
 var elementSBMPanel = document.getElementById("sbmPanel");
 
 var elementWINS = document.getElementById("WINS");
-var elementLOSES = document.getElementById("LOSES");
+var elementLOSSES = document.getElementById("LOSSES");
 
 var audioBeep = document.getElementById("AudioBeep"); 
 var audioBackground = document.getElementById("AudioBackground"); 
 var audioAlert = document.getElementById("AudioAlert"); 
+var audioOK = document.getElementById("AudioOK");
+var audioBadBeep = document.getElementById("AudioBadBeep");
+var audioComputerWorkBeep = document.getElementById("AudioComputerWorkBeep"); 
 
 let theWord = 'hammer';
 let usedChars = '';
 let solved = false;
+let firstKeypressed = false;
 var gTimeoutVar;
+var isActiveGame = true;
 
 console.log("script started");
-updateWordPanel();
+doNextWord();
 
 function updateWordPanel() {
     let displayStr = "";    
@@ -44,13 +49,17 @@ function updateUsedLetterPanel(Chars) {
         var c = Chars.charAt(x);
         displayStr = displayStr + c + ", ";
     }
-    elementUsedLetterPanel.textContent = displayStr;
+    elementUsedLetterPanel.textContent = "Used Letters: " + displayStr;
 }
 
 document.onkeyup = function(event) {
     var userKey = event.key;  
     userKey = userKey.toLowerCase();
     applyChar(userKey);
+    if (!firstKeypressed) {
+        firstKeypressed = true;
+        audioBackground.play();
+    }
 }
 
 function mainFunction() { // dead
@@ -66,21 +75,24 @@ function applyChar(char) {
     audioBeep.play();
     char = char.toLowerCase();
     console.log("User entered: '"+char+"'");
-    // check if the character has been used already.
-    if (isCharInWord(char, usedChars)) {
-        sbm("You already used '"+char+"'");
-    } else {
-        // check if the character is in the word.
-        if (isCharInWord(char, theWord)) {
-            // TODO: Update some kinda - good for you, that character is in the word!
+    if (isActiveGame) {
+        // check if the character has been used already.
+        if (isCharInWord(char, usedChars)) {
+            sbm("You already used '"+char+"'");
         } else {
-            attemptsRemaining--;  
+            // check if the character is in the word.
+            if (isCharInWord(char, theWord)) {
+                // TODO: Update some kinda - good for you, that character is in the word!
+            } else {
+                attemptsRemaining--;  
+                audioBadBeep.play();
+            }
+            updateAttemptsRemaining(attemptsRemaining);
+            usedChars = usedChars + char;
         }
-        updateAttemptsRemaining(attemptsRemaining);
-        usedChars = usedChars + char;
+        updateWordPanel();
+        updateUsedLetterPanel(usedChars);
     }
-    updateWordPanel();
-    updateUsedLetterPanel(usedChars);
 }
 
 function isSolved(displayStr) {
@@ -94,24 +106,39 @@ function updateGUI() {
 
 function updateScore() {
     var w = pad(WINS, 4);
-    var l = pad(LOSES, 4);
+    var l = pad(LOSSES, 4);
     function pad(num, size) {
         var s = "000000000" + num;
         return s.substr(s.length-size);
     }
     elementWINS.textContent = w;
-    elementLOSES.textContent = l;
+    elementLOSSES.textContent = l;
 }
 
 function updateStatus() {
     if (solved) {
         audioAlert.pause(); 
+        audioOK.play();
         elementStatus.textContent = "Puzzle Solved";
-        WINS++;
+        ifActiveWIN();
     } else {
         elementStatus.textContent = "Puzzle Unsolved - Keep trying";
     }
 } 
+
+function ifActiveWIN() {
+    if (isActiveGame) {
+        WINS++;
+        isActiveGame = false;
+    }
+}
+
+function ifActiveLOSE() {
+    if (isActiveGame) {
+        LOSSES++;
+        isActiveGame = false;
+    }
+}
 
 function updateAttemptsRemaining(attemptsRemaining) {
     if (attemptsRemaining > 0) { 
@@ -124,44 +151,34 @@ function updateAttemptsRemaining(attemptsRemaining) {
     } else {
         audioAlert.pause(); 
         elementAttempsRemaining.textContent = "Attempts Remaining: 0 (you lose)";
-        LOSES++;
+        ifActiveLOSE();
     }
 }
 
-function getNextWord() {
-    return "moose";
-}
-
 function doNextWord() {
-    audioAlert.pause(); 
-    theWord = getNextWord(); // todo
+    audioAlert.pause();
+    audioComputerWorkBeep.play(); 
+    theWord = getNextWord(); 
     usedChars = '';
     solved = false;
     updateWordPanel();
     updateGUI();
     updateUsedLetterPanel(usedChars);
     elementStatus.textContent = "Puzzle Unsolved";
-    document.getElementById("input").value = '';
+    attemptsRemaining = MAX_ATTEMPTS;  
+    updateAttemptsRemaining(attemptsRemaining);
+    //document.getElementById("input").value = '';
+    isActiveGame = true;
     sbm("New Game");
 }
 
 function doReset() {
-    audioAlert.pause(); 
-    theWord = 'cat';
     WINS = 0;
-    LOSES = 0;
-    attemptsRemaining = MAX_ATTEMPTS;  
-    updateAttemptsRemaining(attemptsRemaining);
-     usedChars = '';
-    solved = false;
-    updateWordPanel();
-    updateGUI();
-    updateUsedLetterPanel(usedChars);
-    elementStatus.textContent = "Puzzle Unsolved";
-    document.getElementById("input").value = '';
+    LOSSES = 0;
     sbm("Game Reset");
+    doNextWord();
+    audioAlert.pause(); 
 }    
-
 
 
 function sbm(msg) {
@@ -171,7 +188,7 @@ function sbm(msg) {
 }    
 
 function clearSBM() {
-    elementSBMPanel.textContent = '.';
+    elementSBMPanel.textContent = '';
 }
 
 function doTest() {
@@ -201,10 +218,10 @@ function beep() {
 }
 
 function alert() {
-    audioAlert.play();
+    audioComputerWorkBeep.play();
 }
-/// utility function
 
+/// utility functions
 function isCharInWord(char, Word) {
     isFound = false;
     for (var x = 0; x < Word.length; x++) {

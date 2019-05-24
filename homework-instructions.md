@@ -73,11 +73,11 @@ Having an active and healthy commit history on GitHub is important for your futu
 
 6. Guesses Left: (# of guesses left. This will update)
 
-7. Your Guesses So Far: (the specific letters that the user typed. Display these until the user either wins or loses.)
+7. Your Guesses So Far: (the specific letters that the user typed. Display these until the user either wins or LOSSES.)
 
 8. When the player wins, increase the Wins counter and start the game over again (without refreshing the page).
 
-9. When the player loses, increase the Losses counter and restart the game without a page refresh (just like when the user wins).
+9. When the player LOSSES, increase the Losses counter and restart the game without a page refresh (just like when the user wins).
 
 ## Option Two: Word Guess Game (Challenge - Recommended)
 
@@ -101,7 +101,7 @@ Having an active and healthy commit history on GitHub is important for your futu
 
 8. Letters Already Guessed: (Letters the user has guessed, displayed like `L Z Y H`).
 
-9. After the user wins/loses the game should automatically choose another word and make the user play it.
+9. After the user wins/LOSSES the game should automatically choose another word and make the user play it.
 
 ##### Word Guess Game Bonuses
 

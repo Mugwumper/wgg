@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>WGG</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:600" rel="stylesheet">
 </head>
@@ -21,6 +21,19 @@
     <audio id="AudioAlert" loop>
         <source src="assets/sounds/alert09.mp3" type="audio/mpeg">
     </audio>
+    
+    <audio id="AudioOK">
+        <source src="assets/sounds/input_ok_3_clean.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="AudioBadBeep">
+        <source src="assets/sounds/alert12.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="AudioComputerWorkBeep">
+        <source src="assets/sounds/computer_work_beep.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="wrapper down-wrapper" data-wrapper-1="lcars-ds9" data-wrapper-2="807539">
             <div class="header down-wrapper-inner">
                 <h1>LCARS Word Guess Game</h1>
@@ -28,17 +41,19 @@
                     <tbody>
                         <tr>
                             <td>WINS</td>
-                            <td>LOSES</td>
+                            <td>LOSSES</td>
                             <td>53468</td>
                             <td>29348</td>
                             <td>9434352</td>
                             <td>938748</td>
                             <td>23479</td>
                             <td>2934832</td>
+                            <td id="spacer" rowspan="2"></td>
+                            <td rowspan="2"><h5 id="sbmPanel">(gets replaced by status messages)</h5></td>
                         </tr>
                         <tr>
                             <td><div id="WINS">0000</div></td>
-                            <td><div id="LOSES">0000</div></td>
+                            <td><div id="LOSSES">0000</div></td>
                             <td>2934832</td>
                             <td>943</td>
                             <td>9387498</td>
@@ -50,9 +65,8 @@
                 </table>
                 <div class="buttons">
                     <button data-button-number="45" onclick="doNextWord()">NEXT</button>
-                    <button data-button-number="18">TOS</button>
-                    <button data-button-number="91">DS9</button>
-                    <button data-button-number="74">LCARS</button>
+                    <button data-button-number="41" onclick="doReset()">RESET</button>
+                    <button data-button-number="91" onclick="backgroundSoundStop()">MUTE</button>
                 </div>
             </div>
         </div>
@@ -61,26 +75,20 @@
             <div class="up-wrapper-inner">
     
                 <h2 id="wordPanel">(gets replaced with underscores)</h2>
-    
-                <!-- type letters here to guess the word: 
-            <input type="text" id="input" autocomplete="off" onkeyup="mainFunction()"> -->
-    
                 <h4 id="status">(gets replaced with game status)</h4>
                 <h4 id="usedLetterPanel">(gets replaced by used letters)</h4>
-                <h4 id="sbmPanel">(gets replaced by status messages)</h4>
                 <h4 id="attemptsRemaining">(gets replaced by attemptsRemaining messages)</h4>
     
                 <div class="buttons">
-                    <button data-button-number="45" onclick="doReset()">Reset</button>
-                    <button data-button-number="45" onclick="doTest()">Test</button>
-                    <button data-button-number="64" onclick="backgroundSoundStart()">backgroundSoundStart</button>
-                    <button data-button-number="45" onclick="backgroundSoundStop()">backgroundSoundStop</button>
-                    <button data-button-number="45" onclick="beep()">beep</button>
-                    <button data-button-number="45" onclick="alert()">alert</button>
+                    <!-- <button data-button-number="45" onclick="doTest()">Test</button> -->
+                    <!-- <button data-button-number="64" onclick="backgroundSoundStart()">sound</button> -->
+                    <!-- <button data-button-number="45" onclick="beep()">beep</button> -->
+                    <!-- <button data-button-number="45" onclick="alert()">alert</button> -->
                 </div>
             </div>
         </div>
     </body>
+    <script src="assets/javascript/words.js"></script>
     <script src="assets/javascript/game.js"></script>
 
 </html>
